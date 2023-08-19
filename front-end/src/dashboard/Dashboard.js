@@ -10,7 +10,7 @@ import ErrorAlert from "../layout/ErrorAlert";
  */
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
+  const [reservationsError, setReservationsError] = useState(null)
 
   useEffect(loadDashboard, [date]);
 

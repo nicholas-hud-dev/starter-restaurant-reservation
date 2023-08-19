@@ -47,5 +47,9 @@
   },
   "keywords": [],
   "author": "Thinkful, Inc.",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "caniuse-lite": "^1.0.30001519",
+    "dotenv": "^16.3.1"
+  }
 }
