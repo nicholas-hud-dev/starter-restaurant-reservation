@@ -1,7 +1,10 @@
 const { PORT = 5001 } = process.env;
-
-const app = require("./app");
+const express = require("express")
+const app = express()
 const knex = require("./db/connection");
+const cors = require("cors")
+
+app.use(cors())
 
 knex.migrate
   .latest()
@@ -16,4 +19,5 @@ knex.migrate
 
 function listener() {
   console.log(`Listening on Port ${PORT}!`);
-}
+} 
+

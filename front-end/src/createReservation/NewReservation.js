@@ -22,6 +22,9 @@ export default function NewReservation() {
         createReservation(reservation)
         .then(() => {
             history.push(`/dashboard?date=${formData.reservation_date}`)
+        })
+        .catch((error) => {
+            setError(error)
         }) 
         
     }
