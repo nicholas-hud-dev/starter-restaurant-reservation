@@ -1,9 +1,7 @@
 import React from "react"
-import { useHistory } from "react-router"
 
-export default function Form({ formData, setFormData, handleSubmit }) {
+export default function Form({ formData, setFormData, handleSubmit, history }) {
 
-    const history = useHistory()
 
     const handleCancel = (e) => {
         e.preventDefault()

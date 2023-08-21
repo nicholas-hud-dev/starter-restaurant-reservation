@@ -3,9 +3,9 @@ exports.up = function (knex) {
     table.increments("reservation_id").primary().notNullable();
     table.varchar("first_name").notNullable();
     table.varchar("last_name").notNullable();
-    table.varchar("mobile-number").notNullable();
-    table.varchar("reservation-date").notNullable();
-    table.varchar("reservation-time").notNullable();
+    table.varchar("mobile_number").notNullable();
+    table.varchar("reservation_date").notNullable();
+    table.varchar("reservation_time").notNullable();
     table.varchar("people").notNullable();
     table.varchar("status").notNullable().defaultTo("booked");
     table.timestamps(true, true);

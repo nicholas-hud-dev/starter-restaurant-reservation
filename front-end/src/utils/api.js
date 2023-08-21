@@ -68,7 +68,7 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-/** 
+/*
 POST a new reservation to the database
  *
  * @param reservation

@@ -5,10 +5,16 @@ const reservationsService = require("./reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
 
-function list(req, res) {
-  res.json({
-    data: [],
-  });
+async function list(req, res) {
+  const { date } = req.query;
+
+  if (date) {
+    const data = await reservationsService.listByDate(date);
+    res.json({ data });
+  } else {
+    const data = await reservationsService.list();
+    res.json({ data });
+  }
 }
 
 async function create(req, res) {
@@ -23,6 +29,6 @@ async function create(req, res) {
 }
 
 module.exports = {
-  list,
-  create: [asyncErrorBoundary(create)],
+  list: asyncErrorBoundary(list),
+  create: asyncErrorBoundary(create),
 };
