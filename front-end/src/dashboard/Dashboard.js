@@ -4,9 +4,11 @@ import formatReservationDate from "../utils/format-reservation-date";
 import formatReservationTime from "../utils/format-reservation-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationDetails from "./ReservationDetails";
+import useQuery from "../utils/useQuery";
 
 function Dashboard({ initialDate }) {
-  const [date, setDate] = useState(initialDate || new Date().toISOString().slice(0, 10));
+  const query = useQuery();
+  const [date, setDate] = useState(query.get("date")||initialDate);  
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
