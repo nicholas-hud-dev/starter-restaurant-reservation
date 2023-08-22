@@ -16,13 +16,6 @@ export default function NewReservation() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false); // Track form submission
 
-  // useEffect for redirection
-  useEffect(() => {
-    if (formSubmitted && formData.reservation_date) {
-      history.push(`/dashboard?date=${formData.reservation_date}`);
-    }
-  }, [formSubmitted, formData.reservation_date, history]);
-
   const handleSubmit = async () => {
     setError(null);
 
@@ -42,7 +35,9 @@ export default function NewReservation() {
         reservation_date: createdReservation.reservation_date,
       });
 
-      setFormSubmitted(true); // Mark the form as submitted
+      // Mark the form as submitted (no need for a separate state)
+      // Redirect to the dashboard with the new reservation date
+      history.push(`/dashboard?date=${createdReservation.reservation_date}`);
     } catch (error) {
       setError(error);
     }
