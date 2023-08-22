@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Form from "./Form";
 import { createReservation } from "../utils/api";
 import { useHistory } from "react-router-dom";
+import Dashboard from "../dashboard/Dashboard";
 
 export default function NewReservation() {
   const history = useHistory();
@@ -14,7 +15,20 @@ export default function NewReservation() {
     reservation_time: "",
     people: "",
   });
-  const [formSubmitted, setFormSubmitted] = useState(false); // Track form submission
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  // Define a ref to track whether the component is mounted
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    // Set isMounted to true when the component mounts
+    isMounted.current = true;
+
+    // Clean up function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const handleSubmit = async () => {
     setError(null);
@@ -29,15 +43,12 @@ export default function NewReservation() {
       // Use the createReservation function to submit the reservation data
       const createdReservation = await createReservation(reservation);
 
-      // Update the reservation_date in formData
-      setFormData({
-        ...formData,
-        reservation_date: createdReservation.reservation_date,
-      });
-
-      // Mark the form as submitted (no need for a separate state)
-      // Redirect to the dashboard with the new reservation date
-      history.push(`/dashboard?date=${createdReservation.reservation_date}`);
+      // Check if the component is still mounted before setting state
+      if (isMounted.current) {
+        setFormSubmitted(true);
+        // Redirect to the dashboard with the new reservation date
+        history.push(`/dashboard?date=${createdReservation.reservation_date}`);
+      }
     } catch (error) {
       setError(error);
     }
@@ -53,6 +64,9 @@ export default function NewReservation() {
         error={error}
         history={history}
       />
+      {formSubmitted && (
+        <Dashboard initialDate={formData.reservation_date} />
+      )}
     </div>
   );
 }

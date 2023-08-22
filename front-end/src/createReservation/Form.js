@@ -10,7 +10,10 @@ export default function Form({ formData, setFormData, handleSubmit, history }) {
 
     return (
     <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    handleSubmit();
+}}>
             <label>First Name</label>
             <input 
                 name="first_name"

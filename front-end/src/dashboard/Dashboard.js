@@ -18,7 +18,9 @@ function Dashboard({ initialDate }) {
       const reservationsData = await listReservations({ date }, abortController.signal);
       const formattedReservations = formatReservationDate(reservationsData);
       const reservationsWithFormattedTime = formatReservationTime(formattedReservations);
-      setReservations(reservationsWithFormattedTime);
+      if (!abortController.signal.aborted) {
+        setReservations(reservationsWithFormattedTime);
+      }
     } catch (error) {
       console.error("Error fetching reservations:", error);
       setReservationsError(error);
@@ -32,7 +34,8 @@ function Dashboard({ initialDate }) {
 
     return () => {
       // Clean up by aborting the controller when the component unmounts
-      
+      const abortController = new AbortController();
+      abortController.abort();
     };
   }, [loadDashboard]);
 
