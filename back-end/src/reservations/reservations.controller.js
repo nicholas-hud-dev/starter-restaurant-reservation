@@ -18,14 +18,14 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-  console.log("CREATE RUNS", req.body.data)
+  //console.log("CREATE RUNS", req.body.data)
   const newReservation = {...req.body.data, status: "booked"}
-  console.log("newRes", newReservation)
+  //console.log("newRes", newReservation)
 
   const data = await reservationsService.create(newReservation)
 
   console.log("data", data)
-  res.status(201).json({ data: data })
+  //res.status(201).json({ data: data })
 }
 
 module.exports = {
