@@ -3,25 +3,62 @@
  */
 const reservationsService = require("./reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
+const hasProperties = require("../errors/hasProperties")
 
 //VALIDATION LOGIC
 
-function validateReservationData(req, res, next) {
-  const newReservationData = req.body.data;
+async function reservationExists(req, res, next) {
+  const { reservationId } = req.params;
+  const reservation = await service.read(reservationId);
 
-  if (
-    !newReservationData ||
-    !newReservationData.first_name
-    ) {
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Reservation with id: ${reservationId} was not found`,
+  });
+}
+
+const VALID_PROPERTIES = [
+  "first_name",
+  "last_name",
+  "mobile_number",
+  "reservation_date",
+  "reservation_time",
+  "people",
+  "status",
+  "reservation_id",
+  "created_at",
+  "updated_at",
+];
+
+function hasOnlyValidProperties(req, res, next) {
+  const { data = {} } = req.body;
+  const invalidStatuses = Object.keys(data).filter(
+    (field) => !VALID_PROPERTIES.includes(field)
+  );
+  if (invalidStatuses.length) {
     return next({
       status: 400,
-      message: "Required data is missing.",
+      message: `Invalid field(s): ${invalidStatuses.join(", ")}`,
     });
   }
-
-  // If all validations pass, call the next middleware or route handler.
   next();
 }
+
+const REQUIRED_PROPERTIES = [
+  "first_name",
+  "last_name",
+  "mobile_number",
+  "reservation_date",
+  "reservation_time",
+  "people",
+];
+
+const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES)
+
 
 
 //CRUDL FUNCTIONS
@@ -49,6 +86,27 @@ async function create(req, res) {
 }
 
 module.exports = {
-  list: asyncErrorBoundary(list),
-  create: [validateReservationData, asyncErrorBoundary(create)],
+  create: [
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    //hasValidValues,
+    asyncErrorBoundary(create),
+  ],
+  //update: [
+    //asyncErrorBoundary(reservationExists),
+    //hasOnlyValidProperties,
+    //hasRequiredProperties,
+    //hasValidValues,
+    //statusIsBooked,
+    //asyncErrorBoundary(update),
+ // ],
+  //updateStatus: [
+   // asyncErrorBoundary(reservationExists),
+    //statusIsValid,
+    //statusNotFinished,
+    //asyncErrorBoundary(updateStatus),
+  //],
+  list: [//hasValidQuery,
+     asyncErrorBoundary(list)],
+  //read: [reservationExists, asyncErrorBoundary(read)],
 };
