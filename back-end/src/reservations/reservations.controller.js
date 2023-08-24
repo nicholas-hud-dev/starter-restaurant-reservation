@@ -4,6 +4,27 @@
 const reservationsService = require("./reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
+//VALIDATION LOGIC
+
+function validateReservationData(req, res, next) {
+  const newReservationData = req.body.data;
+
+  if (
+    !newReservationData ||
+    !newReservationData.first_name
+    ) {
+    return next({
+      status: 400,
+      message: "Required data is missing.",
+    });
+  }
+
+  // If all validations pass, call the next middleware or route handler.
+  next();
+}
+
+
+//CRUDL FUNCTIONS
 
 async function list(req, res) {
   const { date } = req.query;
@@ -18,17 +39,16 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
-  //console.log("CREATE RUNS", req.body.data)
-  const newReservation = {...req.body.data, status: "booked"}
-  //console.log("newRes", newReservation)
+  const newReservationData = req.body.data;
 
-  const data = await reservationsService.create(newReservation)
+  const newReservation = { ...newReservationData, status: "booked" };
 
-  console.log("data", data)
-  //res.status(201).json({ data: data })
+  const data = await reservationsService.create(newReservation);
+
+  res.status(201).json({ data: data });
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: asyncErrorBoundary(create),
+  create: [validateReservationData, asyncErrorBoundary(create)],
 };
