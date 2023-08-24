@@ -19,7 +19,6 @@ export default function Form({ formData, setFormData, handleSubmit, history }) {
                 name="first_name"
                 placeholder="Enter First Name"
                 type="text"
-                required={true}
                 value={formData.first_name}
                 onChange={(e) => setFormData({
                     first_name: e.target.value,
