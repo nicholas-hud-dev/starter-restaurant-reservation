@@ -6,10 +6,10 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 const hasProperties = require("../errors/hasProperties")
 
 //VALIDATION LOGIC
-
+/*
 async function reservationExists(req, res, next) {
   const { reservationId } = req.params;
-  const reservation = await service.read(reservationId);
+  const reservation = await reservationsService.read(reservationId);
 
   if (reservation) {
     res.locals.reservation = reservation;
@@ -19,7 +19,7 @@ async function reservationExists(req, res, next) {
     status: 404,
     message: `Reservation with id: ${reservationId} was not found`,
   });
-}
+}*/
 
 const VALID_PROPERTIES = [
   "first_name",
@@ -59,7 +59,21 @@ const REQUIRED_PROPERTIES = [
 
 const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES)
 
+// DATE VALIDATION
 
+
+function isValidDate(date) {
+  return !isNaN(Date.parse(date));
+}
+
+function isValidTime(time) {
+  const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+  return timeRegex.test(time);
+}
+
+function isValidNumber(value) {
+  return typeof value === 'number' && !isNaN(value)
+}
 
 //CRUDL FUNCTIONS
 
@@ -76,17 +90,54 @@ async function list(req, res) {
 }
 
 async function create(req, res) {
+  //CREATE VALIDATION
+
   const newReservationData = req.body.data;
 
-  const newReservation = { ...newReservationData, status: "booked" };
+  if (!isValidDate(newReservationData.reservation_date)) {
+    return res.status(400).json({
+      error: "reservation_date",
+    });
+  }
+
+  if (!isValidTime(newReservationData.reservation_time)) {
+    return res.status(400).json({
+      error: "reservation_time",
+    });
+  }
+
+  if (!isValidNumber(newReservationData.people)) {
+    return res.status(400).json({
+      error: "people",
+    });
+  }
+
+  //CREATE
+
+  const newReservation = { 
+    ...newReservationData,
+    status: "booked",   
+  };
 
   const data = await reservationsService.create(newReservation);
 
-  res.status(201).json({ data: data });
+  const responseData = {
+    first_name: data.first_name,
+    last_name: data.last_name,
+    mobile_number: data.mobile_number,
+    reservation_date: data.reservation_date,
+    reservation_time: data.reservation_time,
+    people: parseInt(data.people), // Ensure people is an integer
+  };
+
+  res.status(201).json({ data: responseData });
+
+  
 }
 
 module.exports = {
   create: [
+    //asyncErrorBoundary(reservationExists),
     hasOnlyValidProperties,
     hasRequiredProperties,
     //hasValidValues,
