@@ -13,7 +13,7 @@ export default function NewReservation() {
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: "",
+    people: 0,
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
 

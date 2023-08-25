@@ -1,9 +1,7 @@
-/**
- * List handler for reservation resources
- */
 const reservationsService = require("./reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 const hasProperties = require("../errors/hasProperties")
+const onlyValidProperties = require("../errors/onlyValidProperties")
 
 //VALIDATION LOGIC
 /*
@@ -34,20 +32,6 @@ const VALID_PROPERTIES = [
   "updated_at",
 ];
 
-function hasOnlyValidProperties(req, res, next) {
-  const { data = {} } = req.body;
-  const invalidStatuses = Object.keys(data).filter(
-    (field) => !VALID_PROPERTIES.includes(field)
-  );
-  if (invalidStatuses.length) {
-    return next({
-      status: 400,
-      message: `Invalid field(s): ${invalidStatuses.join(", ")}`,
-    });
-  }
-  next();
-}
-
 const REQUIRED_PROPERTIES = [
   "first_name",
   "last_name",
@@ -57,23 +41,127 @@ const REQUIRED_PROPERTIES = [
   "people",
 ];
 
+const UPDATE_REQUIRED_PROPERTIES = [
+  "first_name",
+  "last_name",
+  "people",
+  "mobile_number",
+  "reservation_date",
+  "reservation_time",
+];
+const UPDATE_VALID_PROPERTIES = [
+  "reservation_id",
+  "status",
+  "created_at",
+  "updated_at",
+  "first_name",
+  "last_name",
+  "people",
+  "mobile_number",
+  "reservation_date",
+  "reservation_time",
+];
+
+
+const hasOnlyValidProperties = onlyValidProperties(VALID_PROPERTIES)
 const hasRequiredProperties = hasProperties(...REQUIRED_PROPERTIES)
+
+const hasOnlyValidUpdateProperties = onlyValidProperties(UPDATE_VALID_PROPERTIES)
+const hasRequiredUpdateProperties = hasProperties(UPDATE_REQUIRED_PROPERTIES)
+
+const hasOnlyStatus = onlyValidProperties(["status"])
+const hasRequiredStatus = hasProperties(["status"])
 
 // DATE VALIDATION
 
-
-function isValidDate(date) {
-  return !isNaN(Date.parse(date));
+function isValidDate(req, res, next) {
+  const date = req.body.data.reservation_date
+  const valid = Date.parse(date)
+  if (valid) {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `reservation_date '${date}' is not a valid date.`
+  })
 }
 
-function isValidTime(time) {
+
+function isValidTime(req, res, next) {
+  const time = req.body.data.reservation_time
   const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-  return timeRegex.test(time);
+  const valid = time.match(timeRegex)
+  if (valid) {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `reservation_time '${time} is not a valid time.`
+  })
 }
 
-function isValidNumber(value) {
-  return typeof value === 'number' && !isNaN(value)
+function isValidNumber(req, res, next) {
+  const people = req.body.data.people
+  const valid = Number.isInteger(people)
+  if (valid && people > 0) {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `people '${people}' is not a valid integer.`
+  })
 }
+
+function statusIsBookedIfPresent(req, res, next) {
+  const { status } = req.body.data
+  if (!status || status === "booked") {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `status should be "booked" or absent, recieved: '${status}'`
+  })
+}
+
+function noReservationsOnTuesdays(req, res, next) {
+  const date = req.body.data.reservation_date
+  const weekday = new Date(date).getUTCDay()
+    if (weekday !== 2) {
+      return next()
+    }
+  next({
+    status: 400,
+    message: `The restaurant is closed on Tuesdays.`
+    })
+}
+
+function noReservationsInPast(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data
+  const presentDate = Date.now() 
+  const newDate = new Date(`${reservation_date} ${reservation_time}`).valueOf()
+    if (newDate > presentDate) {
+      return next()
+    }
+  next({
+    status: 400,
+    message: `New Reservations must be in the future.`
+    })
+}
+
+function reservationIsDuringBusinessHours(req, res, next) {
+  const time = req.body.data.reservation_time
+  const hours = Number(time.slice(0, 2))
+  const minutes = Number(time.slice(3, 5))
+  const clockTime = hours * 100 + minutes
+  if (clockTime < 1030 || clockTime > 2130) {
+    return next({
+      status: 400,
+      message: `Reservation time '${time}' must be between 10:30 AM and 9:30 PM.`
+    })
+  }
+  next()
+}
+
 
 //CRUDL FUNCTIONS
 
@@ -89,30 +177,9 @@ async function list(req, res) {
   }
 }
 
-async function create(req, res) {
-  //CREATE VALIDATION
-
-  const newReservationData = req.body.data;
-
-  if (!isValidDate(newReservationData.reservation_date)) {
-    return res.status(400).json({
-      error: "reservation_date",
-    });
-  }
-
-  if (!isValidTime(newReservationData.reservation_time)) {
-    return res.status(400).json({
-      error: "reservation_time",
-    });
-  }
-
-  if (!isValidNumber(newReservationData.people)) {
-    return res.status(400).json({
-      error: "people",
-    });
-  }
-
   //CREATE
+async function create(req, res) {
+  const newReservationData = req.body.data;
 
   const newReservation = { 
     ...newReservationData,
@@ -125,14 +192,11 @@ async function create(req, res) {
     first_name: data.first_name,
     last_name: data.last_name,
     mobile_number: data.mobile_number,
-    reservation_date: data.reservation_date,
-    reservation_time: data.reservation_time,
-    people: parseInt(data.people), // Ensure people is an integer
-  };
+    people: parseInt(data.people)
+}
 
-  res.status(201).json({ data: responseData });
+  res.status(201).json({ data: responseData});
 
-  
 }
 
 module.exports = {
@@ -140,7 +204,13 @@ module.exports = {
     //asyncErrorBoundary(reservationExists),
     hasOnlyValidProperties,
     hasRequiredProperties,
-    //hasValidValues,
+    isValidDate,
+    isValidTime,
+    isValidNumber,
+    statusIsBookedIfPresent,
+    noReservationsOnTuesdays,
+    noReservationsInPast,
+    reservationIsDuringBusinessHours,
     asyncErrorBoundary(create),
   ],
   //update: [

@@ -7,6 +7,8 @@ import ReservationDetails from "./ReservationDetails";
 import useQuery from "../utils/useQuery";
 
 function Dashboard({ initialDate }) {
+  console.log("Initial date prop:", initialDate);
+
   const query = useQuery();
   const [date, setDate] = useState(query.get("date")||initialDate);  
   const [reservations, setReservations] = useState([]);

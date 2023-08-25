@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function Form({ formData, setFormData, handleSubmit, history }) {
+export default function Form({ formData, setFormData, handleSubmit, history, error }) {
 
 
     const handleCancel = (e) => {
@@ -94,7 +94,7 @@ export default function Form({ formData, setFormData, handleSubmit, history }) {
             />
             <label># of People in Party</label>
             <input 
-                name="People"
+                name="people"
                 placeholder="# of People in Party"
                 type="text"
                 required={true}
@@ -108,6 +108,11 @@ export default function Form({ formData, setFormData, handleSubmit, history }) {
                     people: e.target.value,
                 })}
             />
+            {error && (
+                    <div className="alert alert-danger" role="alert">
+                        {error.message}
+                    </div>
+                )}
             <div>
                 <button type="cancel" onClick={handleCancel}>Cancel</button>
                 <button type="submit">Submit</button>
