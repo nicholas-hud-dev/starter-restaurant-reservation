@@ -2,6 +2,7 @@ const router = require("express").Router();
 const controller = require("./tables.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed")
 
+debugger
 router.route("/")
         .get(controller.list)
         .post(controller.create)
@@ -12,5 +13,4 @@ router.route("/:tableId([0-9]+)")
 router.route("/:tableId([0-9]+)/seat")
 
         
-
 module.exports = router;

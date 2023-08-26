@@ -179,6 +179,7 @@ async function list(req, res) {
 
   //CREATE
 async function create(req, res) {
+  console.log("CREATING RESERVATION")
   const newReservationData = req.body.data;
 
   const newReservation = { 

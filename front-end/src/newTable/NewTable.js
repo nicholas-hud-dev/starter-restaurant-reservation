@@ -22,6 +22,7 @@ const handleSubmit = (e) => {
         table_name, 
         capacity,
     }
+    console.log("TABLE DATA:", table)
     createTable(table)
         .then(() => {
             history.push("/dashboard")

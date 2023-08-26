@@ -75,6 +75,7 @@ async function list(req, res) {
   
 
   async function create(req, res) {
+    console.log("CREATING TABLE")
     const table = req.body.data;
     const data = await tablesService.create(table)
 
