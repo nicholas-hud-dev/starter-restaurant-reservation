@@ -30,6 +30,7 @@ headers.append("Content-Type", "application/json");
  *  If the response is not in the 200 - 399 range the promise is rejected.
  */
 async function fetchJson(url, options, onCancel) {
+  console.log(url)
   try {
     const response = await fetch(url, options);
 
@@ -90,3 +91,61 @@ export async function createReservation(data, signal) {
   return await fetchJson(url, options);
 }
 
+// TABLES
+/** POST a new table to the database
+ *
+ * @param table
+ *  the new table data
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<table>}
+ *  a promise that resolves the saved table
+ */
+export async function createTable(data, signal) {
+  const url = `${API_BASE_URL}/tables/new`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+export async function updateReservationStatus(data, reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+export async function deleteTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({ data: {table_id} }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+export async function deleteReservationId(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({ data: { table_id } }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+export async function listTables(signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  return await fetchJson(url, { headers, signal }, []);
+}

@@ -4,7 +4,7 @@ const hasProperties = require("../errors/hasProperties")
 const onlyValidProperties = require("../errors/onlyValidProperties")
 
 //VALIDATION LOGIC
-/*
+
 async function reservationExists(req, res, next) {
   const { reservationId } = req.params;
   const reservation = await reservationsService.read(reservationId);
@@ -17,7 +17,7 @@ async function reservationExists(req, res, next) {
     status: 404,
     message: `Reservation with id: ${reservationId} was not found`,
   });
-}*/
+}
 
 const VALID_PROPERTIES = [
   "first_name",

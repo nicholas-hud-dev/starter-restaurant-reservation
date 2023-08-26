@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Form from "./Form";
 import { createReservation } from "../utils/api";
 import { useHistory } from "react-router-dom";
-import Dashboard from "../dashboard/Dashboard";
 
 export default function NewReservation() {
   const history = useHistory();
@@ -64,9 +63,6 @@ export default function NewReservation() {
         error={error}
         history={history}
       />
-      {formSubmitted && (
-        <Dashboard initialDate={formData.reservation_date} />
-      )}
     </div>
   );
 }

@@ -43,7 +43,7 @@ function Routes() {
         <Search/>
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={today()} />
+        <Dashboard initialDate={today()} />
       </Route>
       <Route>
         <NotFound />
