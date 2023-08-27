@@ -68,7 +68,7 @@ async function reservationExists(req, res, next) {
 
 async function list(req, res) {
     const table = req.body.data;
-    const data = await tablesService.list
+    const data = await tablesService.list(table)
 
     res.status(201).json({data})
   }
@@ -76,10 +76,16 @@ async function list(req, res) {
 
   async function create(req, res) {
     console.log("CREATING TABLE")
-    const table = req.body.data;
-    const data = await tablesService.create(table)
+    const { table_name, capacity } = req.body;
+    const newTable = {
+        table_name: table_name,
+        capacity: capacity,
+        status: "open",
+    }
+    
+    const createdTable = await tablesService.create(newTable)
 
-    res.status(201).json({data})
+    res.status(201).json({data: createdTable})
   
   }
 

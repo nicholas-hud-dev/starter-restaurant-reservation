@@ -38,6 +38,7 @@ async function fetchJson(url, options, onCancel) {
     }
 
     const payload = await response.json();
+    console.log("RESPONSE PAYLOAD", payload); // Add this line
 
     if (payload.error) {
       return Promise.reject({ message: payload.error });
@@ -51,6 +52,7 @@ async function fetchJson(url, options, onCancel) {
     return Promise.resolve(onCancel);
   }
 }
+
 
 /**
  * Retrieves all existing reservation.
@@ -100,16 +102,30 @@ export async function createReservation(data, signal) {
  * @returns {Promise<table>}
  *  a promise that resolves the saved table
  */
-export async function createTable(data, signal) {
+export async function createTable( table, signal ) {
   const url = `${API_BASE_URL}/tables`;
-  const options = {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ data }),
-    signal,
+  console.log("URL:", url);
+
+  const requestBody = {
+    
+      table_name: table.table_name,
+      capacity: +table.capacity, // Convert capacity to a number
+    
   };
-  return await fetchJson(url, options);
+  console.log("REQUESTBODY:", requestBody)
+
+  return await fetchJson(
+    url,
+    {
+      body: JSON.stringify(requestBody),
+      headers,
+      method: "POST",
+      signal,
+    },
+    []
+  );
 }
+
 
 export async function updateReservationStatus(data, reservation_id, signal) {
   const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;

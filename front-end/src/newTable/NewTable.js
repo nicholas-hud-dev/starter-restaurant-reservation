@@ -24,10 +24,17 @@ const handleSubmit = (e) => {
     }
     console.log("TABLE DATA:", table)
     createTable(table)
-        .then(() => {
+        .then((response) => {
+            console.log("RESPONSE:", response);
             history.push("/dashboard")
         })
-        .catch(setError)
+        .catch((error) => {
+            if (error.response && error.response.data) {
+                setError(error.response.data.error)
+            } else {
+                setError("An error occurred while creating the table")
+            }
+        })
 }
 
     return (

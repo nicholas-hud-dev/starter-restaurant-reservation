@@ -1,10 +1,9 @@
 const knex = require("../db/connection")
 
-function create(table) {
+function create(newTable) {
     return knex("tables")
-    .insert(table)
-    .returning("*")
-    .then((result) => result[0] )
+    .insert(newTable, "*")
+    .then((createdTable) => createdTable[0] )
 }
 
 function read(table_id) {
