@@ -57,11 +57,11 @@ function deleteTable() {
 
 }
 
-module.exports = [
+module.exports = {
     create,
     read,
     list,
     readReservation,
     readTableByReservation,
     updateSeatReservation,
-]
+}

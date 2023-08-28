@@ -9,8 +9,7 @@ const REQUIRED_PROPERTIES = ["table_name", "capacity"]
 const VALID_PROPERTIES = ["table_name", "capacity", "reservation_id", "people"]
 
 const hasOnlyValidPropertiesForCreate = onlyValidProperties(VALID_PROPERTIES)
-const hasRequiredPropertiesForCreate = hasProperties(REQUIRED_PROPERTIES)
-
+const hasRequiredPropertiesForCreate = hasProperties(...REQUIRED_PROPERTIES)
 const hasOnlyValidPropertiesToSeat = onlyValidProperties(["reservation_id"])
 const hasRequiredPropertiesToSeat = hasProperties(["reservation_id"])
 
@@ -76,11 +75,10 @@ async function list(req, res) {
 
   async function create(req, res) {
     console.log("CREATING TABLE")
-    const { table_name, capacity } = req.body;
+    const { table_name, capacity } = req.body.data;
     const newTable = {
         table_name: table_name,
         capacity: capacity,
-        status: "open",
     }
     
     const createdTable = await tablesService.create(newTable)

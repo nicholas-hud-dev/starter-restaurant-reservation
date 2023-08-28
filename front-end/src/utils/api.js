@@ -107,9 +107,11 @@ export async function createTable( table, signal ) {
   console.log("URL:", url);
 
   const requestBody = {
-    
+    data: {
       table_name: table.table_name,
       capacity: +table.capacity, // Convert capacity to a number
+    }
+      
     
   };
   console.log("REQUESTBODY:", requestBody)
