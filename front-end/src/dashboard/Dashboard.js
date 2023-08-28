@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useCallback } from "react";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import formatReservationDate from "../utils/format-reservation-date";
 import formatReservationTime from "../utils/format-reservation-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -14,7 +14,7 @@ function Dashboard({ initialDate }) {
   const [date, setDate] = useState(query.get("date")||initialDate);  
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const [tables, setTables] = useState(null)
+  const [tables, setTables] = useState([])
 
   const loadDashboard = useCallback(async () => {
     const abortController = new AbortController();
@@ -44,6 +44,25 @@ function Dashboard({ initialDate }) {
       abortController.abort();
     };
   }, [loadDashboard]);
+
+const loadTables = useCallback(async () => {
+    try {
+      const tablesData = await listTables();
+      setTables(tablesData);
+    } catch (error) {
+      console.error("Error fetching tables:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadDashboard();
+    loadTables(); // Call the loadTables function
+
+    return () => {
+      const abortController = new AbortController();
+      abortController.abort();
+    };
+  }, [loadDashboard, loadTables]);
 
   function handlePreviousDay() {
     const prevDate = new Date(date);
