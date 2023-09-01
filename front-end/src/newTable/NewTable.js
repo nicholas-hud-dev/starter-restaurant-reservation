@@ -1,69 +1,83 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { createTable } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 export default function NewTable() {
 
 const history = useHistory()
 
+const defaultTableData = {
+    table_name: "",
+    capacity: 0,
+    status: "open"
+  };
+  const [ tableData , setReservationData ] = useState({
+    ...defaultTableData
+  });
 const [table_name, setTable_name] = useState("")
 const [capacity, setCapacity] = useState("")
+const [ buttonDisable, setButtonDisable ] = useState(false);
 const [error, setError] = useState(null)
+const [ createTableError, setTableError ] = useState(null);
+
+const changeHandler = (e) => {
+    e.preventDefault();
+    setReservationData({
+      ...tableData,
+      [e.target.name] : e.target.value
+    });
+  };
 
 const handleCancel = (e) => {
     e.preventDefault()
+    setButtonDisable(state => !state)
     history.goBack()
 }
 
-const handleSubmit = (e) => {
-    e.preventDefault()
-    setError(null)
-    const table = {
-        table_name, 
-        capacity,
-    }
-    console.log("TABLE DATA:", table)
-    createTable(table)
-        .then((response) => {
-            console.log("RESPONSE:", response);
-            history.push("/dashboard")
-        })
-        .catch((error) => {
-            if (error.response && error.response.data) {
-                setError(error.response.data.error)
-            } else {
-                setError("An error occurred while creating the table")
-            }
-        })
-}
+const handleSubmit = event => {
+    event.preventDefault();
+    event.stopPropagation();
+    const controller = new AbortController();
+    setButtonDisable(state => !state)
+    createTable(tableData, controller.signal)
+    .then(() => history.push('/'))
+    .catch(setTableError)
+    setButtonDisable(state => !state)
+  };
 
     return (
         <div>
-            <h1>
-                New Table: Do that here, why not?
-            </h1>
-            <form onSubmit={handleSubmit}>
+            <h1>New Table</h1>
+            {createTableError ? <ErrorAlert error={createTableError} /> : null}
+            <form onSubmit={handleSubmit} onReset={handleCancel}>
+                
+                <div className="form-group">
                 <label>Table Name</label>
-                <input 
+                   <input 
                     name="table_name"
                     type="text"
                     placeholder="Enter Table Name" 
                     required
-                    onChange={(e) => setTable_name(e.target.value)}
-                    value={table_name}
-                />
+                    value={tableData.table_name}
+                    onChange={changeHandler}
+                /> 
+                </div>
+                <div className="form-group">
                 <label>Table Capacity</label>
-                <input
-                    name="capacity"
-                    type="number" 
-                    placeholder="Enter Table Capacity"
-                    required
-                    onChange={(e) => setCapacity(e.target.valueAsNumber)}
-                    value={capacity}
+                    <input
+                        name="capacity"
+                        type="number" 
+                        placeholder="Enter Table Capacity"
+                        required
+                        value={tableData.capacity}
+                        onChange={changeHandler}
                 />
+                </div>
+                
                 <div>
-                    <button onClick={handleCancel}>Cancel</button>
-                    <button type="submit">Submit</button>
+                    <button type="reset" disabled={buttonDisable}>Cancel</button>
+                    <button type="submit" disabled={buttonDisable}>Submit</button>
                 </div>
             </form>
         </div>
