@@ -1,11 +1,6 @@
 const reservationService = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-/**
- * List handler for reservation resources
- */
 
-//validators
-//read
 const reservationIdExists = async (req, res, next) => {
   const { reservation_id } = req.params;
   const specificReservationData = await reservationService.read(
@@ -22,8 +17,6 @@ const reservationIdExists = async (req, res, next) => {
   }
 };
 
-//create
-// issue #3
 const dataBodyExists = async (req, res, next) => {
   if (req.body.data) {
     return next();
@@ -35,7 +28,6 @@ const dataBodyExists = async (req, res, next) => {
   }
 };
 
-// issue #3
 const firstNameExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { first_name } = req.body.data;
@@ -49,7 +41,6 @@ const firstNameExists = async (req, res, next) => {
   }
 };
 
-// issue #3
 const lastNameExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { last_name } = req.body.data;
@@ -63,7 +54,6 @@ const lastNameExists = async (req, res, next) => {
   }
 };
 
-// issue #3
 const mobileNumberExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { mobile_number } = req.body.data;
@@ -77,7 +67,6 @@ const mobileNumberExists = async (req, res, next) => {
   }
 };
 
-// issue #3
 const reservationDateExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { reservation_date } = req.body.data;
@@ -98,7 +87,6 @@ const reservationDateExists = async (req, res, next) => {
   }
 };
 
-// issue #5 and issue #6
 const reservationDateOccursInPast = (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { reservation_date } = req.body.data;
@@ -112,8 +100,7 @@ const reservationDateOccursInPast = (req, res, next) => {
     0,
     1
   );
-  if (resDate > today) {
-    //maybe >= if it needs to occur today too
+  if (resDate >= today) {
     return next();
   } else {
     return next({
@@ -144,7 +131,6 @@ const reservationOccursOnATuesday = (req, res, next) => {
   return next();
 };
 
-// issue #3
 const reservationTimeExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { reservation_time } = req.body.data;
@@ -163,7 +149,6 @@ const reservationTimeExists = async (req, res, next) => {
   }
 };
 
-// issue #6
 const reservationTimeIsWithinBusinessHours = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();
   const { reservation_time } = req.body.data;
@@ -197,7 +182,6 @@ const reservationTimeIsWithinBusinessHours = async (req, res, next) => {
   });
 };
 
-// issue #3
 const peopleExists = async (req, res, next) => {
   if(req.params.reservation_option) return next();
   const { people } = req.body.data;
@@ -211,7 +195,6 @@ const peopleExists = async (req, res, next) => {
   }
 };
 
-//issue #12
 const statusCheckforPOST = async (req, res, next) => {
   if(req.body.data.status){
   const { status } = req.body.data;
@@ -228,7 +211,6 @@ const statusCheckforPOST = async (req, res, next) => {
   }
 };
 
-//issue #13
 const statusCheckForPUT = async (req, res, next) => {
   const { status } = req.body.data;
   const statTern =
@@ -251,7 +233,6 @@ const statusCheckForPUT = async (req, res, next) => {
   }
 };
 
-//issue #13
 const statusCheckOfRes = async (req, res, next) => {
   const { status } = res.locals.reservation;
   if (status === "finished") {
@@ -287,7 +268,6 @@ const create = async (req, res) => {
   res.status(201).json({ data: newReservation });
 };
 
-// issue #10
 const read = async (req, res) => {
   const data = res.locals.reservation;
   res.status(200).json({ data });

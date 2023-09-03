@@ -1,57 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { listReservations } from "../utils/api";
-import ReservationDetails from "../dashboard/ReservationDetails";
+import ErrorAlert from "../layout/ErrorAlert";
+import Form from "../createReservation/Form";
+
+const formatNumber = mobile_phone => {
+  mobile_phone = mobile_phone.toString();
+  const areaCode = mobile_phone.slice(0,3);
+  const firstPortion = mobile_phone.slice(3,6);
+  const secondPortion = mobile_phone.slice(6,10);
+  return areaCode + "-" + firstPortion + "-" + secondPortion;
+};
 
 export default function Search() {
-  const [mobile_number, setMobileNumber] = useState("");
-  const [reservations, setReservations] = useState(null);
-  const [showError, setShowError] = useState(false);
 
-  useEffect(() => {
-    if (reservations && reservations.length === 0) {
-      setShowError(true);
+    const [ mobile_phone, setMobile_phone ] = useState("")
+    const [ data, setData ] = useState([]);
+    const [ searchError, setSearchError ] = useState(null);
+    const [ buttonDisable, setButtonDisable ] = useState(false);
+
+    const findHandler = event => {
+        event.preventDefault();
+        if(mobile_phone !== ""){
+        const controller = new AbortController()
+        setButtonDisable(state => !state)
+        const mobile_number = formatNumber(mobile_phone)
+        listReservations({ mobile_number }, controller.signal)
+        .then(setData)
+        .catch(setSearchError)
+        setButtonDisable(state => !state);}
     }
-  }, [reservations]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    listReservations({ mobile_number }).then((res) => {
-      setReservations(res);
-    });
-  };
-
-  const handleMobileNumberChange = (e) => {
-    setMobileNumber(e.target.value);
-  };
 
   return (
     <div>
-      <div>
-        {showError && <p>No reservations found</p>}
-      </div>
-      <h1>Search. Yeah, I said it</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="mobile_number"
-          type="text"
-          placeholder="Enter a customer's phone number"
-          required
-          value={mobile_number}
-          onChange={handleMobileNumberChange} // Add this onChange handler
-        />
-        <button type="submit">Search</button>
-      </form>
+    <h1>Search</h1>
+      <ErrorAlert error={searchError} />
+      <form className="d-flex" onSubmit={findHandler}>
+        <div className="form-group mb-2 mr-1 col-6">
+          <input
+            type="number"
 
-      <div>
-        <ul>
-          {reservations &&
-            reservations.map((res) => (
-              <li key={res.reservation_id}>
-                <ReservationDetails reservation={res} />
-              </li>
-            ))}
-        </ul>
-      </div>
+            className="form-control"
+            name="mobile_number"
+            id="mobile_number"
+            placeholder="Enter a customer's phone number"
+            value={mobile_phone}
+            onChange={event => setMobile_phone(event.target.value)}
+          />
+        </div>
+        <button
+          type="submit"
+          className="btn btn-info mb-2 ml-1"
+          disabled={buttonDisable}
+        >
+          Find
+        </button>
+      </form>
+      {data.length > 0 ? <Form reservations={data} /> : <h3>No reservations found</h3>}
     </div>
   );
-}
+};

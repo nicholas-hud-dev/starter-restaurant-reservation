@@ -2,7 +2,6 @@ const tableService = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 //validation
-//issue #8
 const tableExists = async (req, res, next) => {
   const { table_id } = req.params;
   const data = await tableService.read(Number(table_id));
@@ -17,7 +16,6 @@ const tableExists = async (req, res, next) => {
   }
 };
 
-//issue #8
 const dataBodyExists = async (req, res, next) => {
   if (req.body.data) {
     return next();
@@ -29,7 +27,6 @@ const dataBodyExists = async (req, res, next) => {
   }
 };
 
-//issue #11
 const reservationIdExists = async (req, res, next) => {
   const { reservation_id } = req.body.data;
   if (
@@ -43,7 +40,7 @@ const reservationIdExists = async (req, res, next) => {
       if("status" in reservation){
         if(reservation.status === "seated"){
           return next({
-            message: "Reservation is already seated",
+            message: "Reservation is occupied",
             status: 400,
           })
         }
@@ -64,7 +61,6 @@ const reservationIdExists = async (req, res, next) => {
   }
 };
 
-//issue #11
 const capacityCheck = async (req, res, next) => {
   const { table_option } = req.params;
   const { people } = res.locals.reservation;
@@ -94,7 +90,6 @@ const capacityCheck = async (req, res, next) => {
   }
 };
 
-//issue #8
 const tableNameExists = async (req, res, next) => {
   const { table_name } = req.body.data;
   if (table_name && table_name !== "" && table_name.length > 1) {
@@ -107,7 +102,6 @@ const tableNameExists = async (req, res, next) => {
   }
 };
 
-//issue #8
 const capacityExists = async (req, res, next) => {
   const { capacity } = req.body.data;
   if (capacity && !isNaN(capacity) && capacity > 0) {
@@ -120,9 +114,9 @@ const capacityExists = async (req, res, next) => {
   }
 };
 
-//issue #7
 const notOccupied = async (req, res, next) => {
   const { status } = res.locals.table;
+  console.log(res.locals.table)
   if (status === "occupied") {
     return next();
   } else {
@@ -134,7 +128,6 @@ const notOccupied = async (req, res, next) => {
 };
 
 //CRUDL functions
-//issue #8
 const create = async (req, res) => {
   const { table_name, capacity } = req.body.data;
   const newTable = {
@@ -146,7 +139,6 @@ const create = async (req, res) => {
   res.status(201).json({ data: createdTable });
 };
 
-//issue #8
 const read = async (req, res) => {
   res.json({ data: res.locals.table });
 };
@@ -167,7 +159,6 @@ const update = async (req, res) => {
   res.json({ data: updatedTable });
 };
 
-//issue #7
 const destroy = async (req, res) => {
   const {reservation_id} = res.locals.table;
   const newTable = {
@@ -183,7 +174,6 @@ const destroy = async (req, res) => {
   res.status(200).json({ data: openedTable });
 };
 
-//issue #9
 const list = async (req, res) => {
   res.status(200).json({
     data: await tableService.list(),

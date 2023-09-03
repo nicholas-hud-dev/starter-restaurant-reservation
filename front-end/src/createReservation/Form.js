@@ -1,123 +1,94 @@
- import React from "react"
+import { useHistory } from "react-router-dom";
+import { cancelReservation } from "../utils/api";
 
-export default function Form({ formData, setFormData, handleSubmit, history, error }) {
+export default function Form({ reservations }) {
+    const history = useHistory();
 
-
-    const handleCancel = (e) => {
-        e.preventDefault()
-        history.goBack()
-    }
-
+    const cancelHandler = (event) => {
+      event.preventDefault();
+      const controller = new AbortController();
+      const index =
+        event.target.parentElement.parentElement.getAttribute("index");
+      const rock = window.confirm("Do you really want to change this?");
+      if (rock) {
+        cancelReservation(reservations[index], controller.signal).then(() =>
+          history.push("/")
+        );
+      }
+    };
+  
     return (
-    <div>
-        <form onSubmit={(e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-    handleSubmit();
-}}>
-            <label>First Name</label>
-            <input 
-                name="first_name"
-                placeholder="Enter First Name"
-                type="text"
-                value={formData.first_name}
-                onChange={(e) => setFormData({
-                    first_name: e.target.value,
-                    last_name: formData.last_name,
-                    mobile_number: formData.mobile_number,
-                    reservation_date: formData.reservation_date,
-                    reservation_time: formData.reservation_time,
-                    people: formData.people,
-                })}
-            />
-            <label>Last Name</label>
-            <input 
-                name="last_name"
-                placeholder="Enter Last Name"
-                type="text"
-                required={true}
-                value={formData.last_name}
-                onChange={(e) => setFormData({
-                    first_name: formData.first_name,
-                    last_name: e.target.value,
-                    mobile_number: formData.mobile_number,
-                    reservation_date: formData.reservation_date,
-                    reservation_time: formData.reservation_time,
-                    people: formData.people,
-                })}
-            />
-            <label>Mobile Number</label>
-            <input 
-                name="mobile_number"
-                placeholder="xxx-xxx-xxxx"
-                type="tel"
-                required={true}
-                value={formData.mobile_number}
-                onChange={(e) => setFormData({
-                    first_name: formData.first_name,
-                    last_name: formData.last_name,
-                    mobile_number: e.target.value,
-                    reservation_date: formData.reservation_date,
-                    reservation_time: formData.reservation_time,
-                    people: formData.people,
-                })}
-            />
-            <label>Reservation Date</label>
-            <input 
-                name="reservation_date"
-                pattern="\d{2}-\d{2}-\d{4}"
-                type="date"
-                required={true}
-                value={formData.reservation_date}
-                onChange={(e) => setFormData({
-                    first_name: formData.first_name,
-                    last_name: formData.last_name,
-                    mobile_number: formData.mobile_number,
-                    reservation_date: e.target.value,
-                    reservation_time: formData.reservation_time,
-                    people: formData.people,
-                })}
-            />
-            <label>Reservation Time</label>
-            <input 
-                name="reservation_time"
-                type="time"
-                required={true}
-                value={formData.reservation_time}
-                onChange={(e) => setFormData({
-                    first_name: formData.first_name,
-                    last_name: formData.last_name,
-                    mobile_number: formData.mobile_number,
-                    reservation_date: formData.reservation_date,
-                    reservation_time: e.target.value,
-                    people: formData.people,
-                })}
-            />
-            <label># of People in Party</label>
-            <input 
-                name="people"
-                placeholder="# of People in Party"
-                type="text"
-                required={true}
-                value={formData.people}
-                onChange={(e) => setFormData({
-                    first_name: formData.first_name,
-                    last_name: formData.last_name,
-                    mobile_number: formData.mobile_number,
-                    reservation_date: formData.reservation_date,
-                    reservation_time: formData.reservation_time,
-                    people: e.target.value,
-                })}
-            />
-            {error && (
-                    <div className="alert alert-danger" role="alert">
-                        {error.message}
-                    </div>
-                )}
-            <div>
-                <button type="cancel" onClick={handleCancel}>Cancel</button>
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-    </div>
-    )
-}
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Reservation Day</th>
+            <th scope="col">Reservation Time</th>
+            <th scope="col">Number of People</th>
+            <th scope="col">Status</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reservations.map(
+            (
+              {
+                reservation_id,
+                first_name,
+                last_name,
+                mobile_number,
+                reservation_date,
+                reservation_time,
+                people,
+                status,
+              }
+            ) => {
+              if (status !== "finished") {
+                return (
+                  <tr key={reservation_id}>
+                    <td>{first_name}</td>
+                    <td>{last_name}</td>
+                    <td>{mobile_number}</td>
+                    <td>{reservation_date}</td>
+                    <td>{reservation_time}</td>
+                    <td>{people}</td>
+                    <td>{status}</td>
+                    <td>
+                      {status === "booked" ? (
+                        <>
+                          <a
+                            className="btn btn-primary m-1"
+                            href={`/reservations/${reservation_id}/edit`}
+                            role="button"
+                          >
+                            Edit
+                          </a>
+                          <a
+                            className="btn btn-primary m-1"
+                            href={`/reservations/${reservation_id}/seat`}
+                            role="button"
+                          >
+                            Seat
+                          </a>
+                          <button
+                            type="button"
+                            className="btn btn-danger m-1"
+                            onClick={cancelHandler}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : null}
+                    </td>
+                  </tr>
+                );
+              }
+              return null;
+            }
+          )}
+        </tbody>
+      </table>
+    );
+  }

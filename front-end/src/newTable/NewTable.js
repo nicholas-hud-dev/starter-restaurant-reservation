@@ -15,10 +15,8 @@ const defaultTableData = {
   const [ tableData , setReservationData ] = useState({
     ...defaultTableData
   });
-const [table_name, setTable_name] = useState("")
-const [capacity, setCapacity] = useState("")
+
 const [ buttonDisable, setButtonDisable ] = useState(false);
-const [error, setError] = useState(null)
 const [ createTableError, setTableError ] = useState(null);
 
 const changeHandler = (e) => {

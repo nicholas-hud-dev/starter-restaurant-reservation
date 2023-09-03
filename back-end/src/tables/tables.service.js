@@ -20,14 +20,12 @@ const read = (table_id) => {
     .first();
 };
 
-//issue #11
 const readRes = (reservation_id) => {
     return knex('reservations')
     .where({reservation_id})
     .first();
 };
 
-//issue #11
 const readByCapacity = (capacity, table_id) => {
     return knex('tables')
     .where({capacity})
@@ -47,7 +45,6 @@ const update = async (updatedTable, updatedReservation) => {
     return read(table_id)
 };
 
-//issue #7
 const destroy = async (openedTable, finishedReservation) => {
     const {table_id} = openedTable;
     const {reservation_id} = finishedReservation;
@@ -62,7 +59,6 @@ const destroy = async (openedTable, finishedReservation) => {
     return readAll(table_id);
 };
 
-//issue #9
 const list = () => {
     return knex('tables')
     .select('*')

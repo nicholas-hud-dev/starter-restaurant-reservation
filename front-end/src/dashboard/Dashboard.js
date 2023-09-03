@@ -1,11 +1,8 @@
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
-import formatReservationDate from "../utils/format-reservation-date";
-import formatReservationTime from "../utils/format-reservation-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationDetails from "./ReservationDetails";
-import useQuery from "../utils/useQuery";
 import Table from "./TableDetails";
 import makeDate from "./makeDate";
 

@@ -25,13 +25,25 @@ const destroy = () => {
 };
 
 const list = (reservation_date) => {
-  if (reservation_date) {
-    return knex("reservations")
-      .where({ reservation_date, status: "booked" })
-      .orWhere({ reservation_date, status: "seated" })
-      .orderBy("reservation_time");
-  } //issue #4
-};
+    if (reservation_date) {
+
+        const query = knex("reservations")
+      .select("*")
+      .where({ reservation_date })
+      .whereIn("status", ["booked", "seated"])
+      .orderBy("reservation_time")
+      .toString();
+    
+    console.log("SQL Query:", query)
+
+      return knex("reservations")
+        .select("*")
+        .where({ reservation_date })
+        .whereIn("status", ["booked", "seated"]) // Include only "booked" and "seated" statuses
+        .orderBy("reservation_time");
+    }
+  };
+  
 
 const search = (mobile_number) => {
   return knex("reservations")
