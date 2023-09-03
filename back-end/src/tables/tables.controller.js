@@ -1,5 +1,6 @@
 const tableService = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const reservationService = require("../reservations/reservations.service")
 
 //validation
 const tableExists = async (req, res, next) => {
@@ -28,38 +29,27 @@ const dataBodyExists = async (req, res, next) => {
 };
 
 const reservationIdExists = async (req, res, next) => {
-  const { reservation_id } = req.body.data;
-  if (
-    reservation_id &&
-    reservation_id !== "" &&
-    reservation_id == Number(reservation_id) &&
-    Number(reservation_id) > 0
-  ) {
-    const reservation = await tableService.readRes(reservation_id);
-    if (reservation) {
-      if("status" in reservation){
-        if(reservation.status === "seated"){
-          return next({
-            message: "Reservation is occupied",
-            status: 400,
-          })
-        }
-      }
-      res.locals.reservation = reservation;
-      return next();
+    const { reservation_id } = req.body.data;
+    if (
+      reservation_id &&
+      reservation_id !== "" &&
+      reservation_id == Number(reservation_id) &&
+      Number(reservation_id) > 0
+    ) {
+      const reservation =  await reservationService.read(reservation_id);
+      if (reservation) {
+  
+        res.locals.reservation = reservation;
+        return next();
+  
     } else {
       return next({
-        message: `Reservation ${reservation_id} does not exist.`,
-        status: 404,
+        message: "Please input an existing reservation_id",
+        status: 400,
       });
     }
-  } else {
-    return next({
-      message: "Please input an existing reservation_id",
-      status: 400,
-    });
   }
-};
+}
 
 const capacityCheck = async (req, res, next) => {
   const { table_option } = req.params;
@@ -174,11 +164,11 @@ const destroy = async (req, res) => {
   res.status(200).json({ data: openedTable });
 };
 
-const list = async (req, res) => {
-  res.status(200).json({
-    data: await tableService.list(),
-  });
-};
+async function list(req, res) {
+    const data = await tableService.list();  
+    console.log(data)
+    res.json({ data });
+  }
 
 module.exports = {
   create: [
@@ -200,5 +190,7 @@ module.exports = {
     asyncErrorBoundary(notOccupied),
     asyncErrorBoundary(destroy),
   ],
-  list: [asyncErrorBoundary(list)],
-};
+  list: [
+    asyncErrorBoundary(list)
+],
+}
