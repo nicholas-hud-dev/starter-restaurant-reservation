@@ -213,17 +213,9 @@ const statusCheckforPOST = async (req, res, next) => {
 
 const statusCheckForPUT = async (req, res, next) => {
   const { status } = req.body.data;
-  const statTern =
-    status === "booked"
-      ? true
-      : status === "seated"
-      ? true
-      : status === "finished"
-      ? true
-      : status === "cancelled"
-      ? true
-      : false;
-  if (statTern) {
+
+  // Check if the provided status is one of the allowed values
+  if (["booked", "seated", "finished", "cancelled"].includes(status)) {
     return next();
   } else {
     return next({
@@ -232,6 +224,7 @@ const statusCheckForPUT = async (req, res, next) => {
     });
   }
 };
+
 
 const statusCheckOfRes = async (req, res, next) => {
   const { status } = res.locals.reservation;

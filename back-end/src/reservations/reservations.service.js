@@ -34,7 +34,7 @@ const list = (reservation_date) => {
       .orderBy("reservation_time")
       .toString();
     
-    console.log("SQL Query:", query)
+    //console.log("SQL Query:", query)
 
       return knex("reservations")
         .select("*")

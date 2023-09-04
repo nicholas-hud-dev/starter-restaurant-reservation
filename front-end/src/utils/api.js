@@ -165,9 +165,9 @@ export async function listTables(signal) {
 }
 
 
-export async function cancelReservation(reservation_id, signal) {
-  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
-  console.log("cancelRESERVinAPI", reservation_id)
+export async function cancelReservation(reservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}/status`;
+  //console.log("cancelRESERVinAPI", reservation_id)
   return await fetchJson(
     url,
     {

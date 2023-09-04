@@ -18,7 +18,9 @@ export default function Edit() {
         return () => controller.abort();
     };
 
-    useEffect(loadReservation, [reservation_id])
+    useEffect(loadReservation, [reservation_id]);
+
+    console.log("Rendering Edit component with reservation:", reservation);
 
     return(
         <div>

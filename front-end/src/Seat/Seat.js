@@ -3,6 +3,8 @@ import { useParams, useHistory } from "react-router-dom";
 import { listTables, updateTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
+console.log("RESID F SEAt",reservation_id)
+
 export default function Seat() {
   const history = useHistory();
   const { reservation_id } = useParams();
