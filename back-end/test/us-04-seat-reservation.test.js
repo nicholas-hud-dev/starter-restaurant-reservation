@@ -127,7 +127,7 @@ describe("US-04 - Seat reservation", () => {
           .send({ data });
 
         expect(response.body.error).toContain("capacity");
-        expect(response.status).toBe(201);
+        expect(response.status).toBe(400);
       });
 
       test("returns 201 if table is created", async () => {

@@ -80,13 +80,19 @@ const tableNameExists = (req, res, next) => {
 
 const capacityExists = (req, res, next) => {
     const { capacity } = req.body.data;
-    if (capacity && !isNaN(capacity) && capacity > 0) {
-      return next();
-    } else {
+    if (!capacity) {
       return next({
-        message: "The table must have a capacity greater than zero",
+        message: 'capacity required',
         status: 400,
       });
+    }
+    if ((capacity && capacity.length) || Number(capacity) <= 0) {
+      return next({
+        message: 'The table must have a capacity greater than zero',
+        status: 400,
+      });
+    } else {
+      return next();
     }
   };
 
