@@ -8,7 +8,8 @@ router.route('/:reservation_id/:reservation_option')
 
 router.route('/').
         post(controller.create)
-        .get(controller.list).all(methodNotAllowed)
+        .get(controller.list)
+        .all(methodNotAllowed)
 
 router.route('/:reservation_id')
         .get(controller.read)
