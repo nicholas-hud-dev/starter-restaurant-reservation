@@ -1,5 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { cancelReservation } from "../utils/api";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function ReservationDetails({ reservations }) {
   const history = useHistory();
@@ -57,20 +58,22 @@ export default function ReservationDetails({ reservations }) {
                   <td>
                     {status === "booked" ? (
                       <>
-                        <a
-                          className="btn btn-primary m-1"
-                          href={`/reservations/${reservation_id}/edit`}
-                          role="button"
-                        >
-                          Edit
-                        </a>
-                        <a
-                          className="btn btn-primary m-1"
-                          href={`/reservations/${reservation_id}/seat`}
-                          role="button"
-                        >
-                          Seat
-                        </a>
+                        <Link
+                    reservation_id={reservation_id}
+                    className="btn btn-secondary"
+                    role="button"
+                    to={`/reservations/${reservation_id}/edit`}
+                    >
+                    Edit
+                    </Link>
+                        <Link
+                    reservation_id={reservation_id}
+                    className="btn btn-secondary"
+                    role="button"
+                    to={`/reservations/${reservation_id}/seat`}
+                    >
+                    Seat
+                    </Link>
                         <button
                           type="button"
                           className="btn btn-danger m-1"

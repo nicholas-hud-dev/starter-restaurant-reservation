@@ -147,13 +147,16 @@ export async function createTable(table, signal) {
 
 export async function updateTable(table_id, reservation_id, signal) {
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  
+  const abortController = new AbortController();
+  
   return await fetchJson(
     url,
     {
       body: JSON.stringify({ data: { reservation_id } }),
       headers,
       method: "PUT",
-      signal,
+      signal: signal || abortController.signal,
     },
     []
   );

@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { deleteTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { useHistory } from "react-router-dom";
 
 export default function Table({ tables }) {
-
+    const history = useHistory();
     const [ tablesError, setTablesError ] = useState(null);
     
-    const finishHandler = event => {
+    const finishHandler = (event) => {
         const controller = new AbortController();
         const userChoice = window.confirm("Is this table ready to seat new guests? This cannot be undone.");
         if(userChoice) {
             deleteTable(Number(event.target.value), controller.signal)
-            .catch(setTablesError)
+        .then(() => {
+          // Redirect to the "/" page after successful deletion
+          history.push("/");
+        })
+        .catch(setTablesError);
         }
         return () => controller.abort();
     }

@@ -7,8 +7,8 @@ import { today } from "../utils/date-time";
 
 import NewReservation from "../createReservation/NewReservation";
 import NewTable from "../newTable/NewTable";
-import EditReservation from "./EditReservation";
-import SeatReservation from "./SeatReservation";
+import Edit from "../Edit/Edit";
+import Seat from "../Seat/Seat";
 import Search from "../Search/Search";
 
 /**
@@ -24,26 +24,26 @@ function Routes() {
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
+      <Route path="/reservations/new">
+        <NewReservation />
+      </Route>
+      <Route path="/tables/new">
+        <NewTable />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <Seat />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <Edit />
+      </Route>
+      <Route path="/search">
+        <Search />
+      </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact={true} path="/reservations/new">
-        <NewReservation/>
-      </Route>
-      <Route exact={true} path="/reservations/:reservation_id/seat">
-        <SeatReservation/>
-      </Route>
-      <Route exact={true} path="/reservations/:reservation_id/edit">
-        <EditReservation/>
-      </Route>
-      <Route exact={true} path="/tables/new">
-        <NewTable/>
-      </Route>
-      <Route exact={true} path="/search">
-        <Search/>
-      </Route>
       <Route path="/dashboard">
-        <Dashboard initialDate={today()} />
+        <Dashboard date={today()} />
       </Route>
       <Route>
         <NotFound />

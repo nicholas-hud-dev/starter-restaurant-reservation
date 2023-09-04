@@ -103,6 +103,19 @@ const notOccupied = (req, res, next) => {
     }
   };
 
+
+
+  function tableIsNotOccupied(req, res, next) {
+    const { reservation_id } = res.locals.table;
+    if (!reservation_id) {
+      return next({
+        status: 400,
+        message: `Table is not occupied.`,
+      });
+    }
+    return next();
+  }
+
 //CRUDL functions
 const create = async (req, res) => {
   const { table_name, capacity } = req.body.data;
@@ -178,7 +191,7 @@ module.exports = {
   ],
   delete: [
     asyncErrorBoundary(tableExists),
-    notOccupied,
+    tableIsNotOccupied,
     asyncErrorBoundary(destroy),
   ],
   list: [

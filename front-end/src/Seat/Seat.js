@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { listTables, updateTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-console.log("RESID F SEAt",reservation_id)
+
 
 export default function Seat() {
   const history = useHistory();
@@ -11,7 +11,8 @@ export default function Seat() {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
   const [ tableId, setTableId ] = useState(0);
-
+console.log("RESID F SEAt", reservation_id)
+ 
   const loadTables = () => {
     console.log("loadTables")
     const abortController = new AbortController();
