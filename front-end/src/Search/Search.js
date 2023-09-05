@@ -37,7 +37,7 @@ export default function Search() {
       <form className="d-flex" onSubmit={findHandler}>
         <div className="form-group mb-2 mr-1 col-6">
           <input
-            type="number"
+            type="text"
 
             className="form-control"
             name="mobile_number"
