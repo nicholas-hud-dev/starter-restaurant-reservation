@@ -31,13 +31,19 @@ export default function NewReservation({ reservation }) {
   const submitHandler = (event) => {
     event.preventDefault();
     const controller = new AbortController();
+    const date = newReservation.reservation_date;
+
     if (reservation) {
-      updateReservation(reservationData, controller.signal) //THIS WORKS !!! WOOO
-        .then(() => history.push("/"))
+      updateReservation(reservationData, controller.signal) 
+      .then(() => {
+        history.push(`/dashboard?date=${date}`);
+      })
         .catch(setResError);
     } else {
-      createReservation(reservationData, controller.signal) //THIS WORKS !!! WOOO
-        .then(() => history.push("/"))
+      createReservation(reservationData, controller.signal) 
+      .then((createdReservation) => {
+        history.push(`/dashboard?date=${date}`);
+      })
         .catch(setResError);
     }
     return () => controller.abort();
