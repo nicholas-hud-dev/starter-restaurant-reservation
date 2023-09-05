@@ -183,18 +183,13 @@ const reservationTimeIsWithinBusinessHours = async (req, res, next) => {
 };
 
 const peopleExists = async (req, res, next) => {
-  if(req.params.reservation_option) return next();
-  const { people } = req.body.data;
-  console.log('PEOPL', people)
-  if (people && typeof people === "number" && people > 0) {
+  let people = req.body.data.people;
+  if (people && people > 0 ) {
     return next();
-  } else {
-    return next({
-      message: `Body of Data must contain a number of people`,
-      status: 400,
-    });
   }
-};
+
+  next({ status: 400, message: "Body of Data must contain a number of people" });
+}
 
 const statusCheckforPOST = async (req, res, next) => {
   if(req.body.data.status){
