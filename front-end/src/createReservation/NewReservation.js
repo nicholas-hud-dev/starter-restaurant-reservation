@@ -34,13 +34,13 @@ export default function NewReservation({ reservation }) {
     if (reservation) {
       updateReservation(reservationData, controller.signal) 
       .then(() => {
-        history.push(`/date=${reservationData.date}`);
+        history.push(`/dashboard?date=${reservationData.date}`);
       })
         .catch(setResError);
     } else {
       createReservation(reservationData, controller.signal) 
       .then((createdReservation) => {
-        history.push(`/date=${createdReservation.date}`);
+        history.push(`/dashboard?date=${createdReservation.date}`);
       })
         .catch(setResError);
     }
