@@ -185,6 +185,7 @@ const reservationTimeIsWithinBusinessHours = async (req, res, next) => {
 const peopleExists = async (req, res, next) => {
   if(req.params.reservation_option) return next();
   const { people } = req.body.data;
+  console.log('PEOPL', people)
   if (people && typeof people === "number" && people > 0) {
     return next();
   } else {
