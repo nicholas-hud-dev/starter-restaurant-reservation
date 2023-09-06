@@ -23,12 +23,14 @@ export default function Dashboard({ exportDate }) {
   const loadReservations = () => {
     const abortController = new AbortController();
     const date = exportDate ? exportDate : makeDate(dateAugment);
-    setDateAugment(date)
+    //setDateAugment(date)
     console.log("DATEDASHLOG", date)
     setReservationsError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+      console.log("RESERV IN DASH:", reservations)
+      console.log("date = ", makeDate(dateAugment))
     return () => abortController.abort();
   };
 
@@ -42,6 +44,7 @@ export default function Dashboard({ exportDate }) {
   };
 
   const loadBoth = () => {
+    console.log("Inside loadboth for -", dateAugment)
     const controller = new AbortController();
     loadReservations();
     loadTables();
