@@ -63,13 +63,13 @@ export default function Dashboard({ exportDate }) {
     const buttonText = event.target.innerHTML;
     switch (buttonText) {
       case "Previous":
-        setDate(state => state - 1)
+        setDate(previous(date))
         break;
       case "Today":
         setDate(0)
         break;
       case "Next":
-        setDate(state => state + 1)
+        setDate(next(date))
         break;
       default:
         break;
