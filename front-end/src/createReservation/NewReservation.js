@@ -31,17 +31,20 @@ export default function NewReservation({ reservation }) {
   const submitHandler = async (event) => {
     event.preventDefault();
     const controller = new AbortController();
+    const formattedDate = new Date(reservationData.reservation_date).toISOString().split('T')[0];
+history.push(`/dashboard?date=12/19/2023`)
     try {
       if (reservation) {
+        
         const response = await updateReservation(reservationData, controller.signal);
         console.log("Response:", response);
-        console.log("Date:", reservationData.reservation_date);
-        history.push(`/dashboard?date=${reservationData.reservation_date}`);
+        console.log("Date:", reservationData.formattedDate);
+        history.push(`/dashboard?date=12/19/2023`)
       } else {
         const result = await createReservation(reservationData, controller.signal);
         console.log("Result:", result);
-        console.log("Date:", reservationData.reservation_date);
-        history.push(`/dashboard?date=${reservationData.reservation_date}`);
+        console.log("Date:", reservationData.formattedDate);
+        history.push(`/dashboard?date=12/19/2023`)
       }
     } catch (err) {
       setResError(err);
