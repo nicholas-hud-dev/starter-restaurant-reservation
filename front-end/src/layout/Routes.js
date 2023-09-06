@@ -10,6 +10,7 @@ import NewTable from "../newTable/NewTable";
 import Edit from "../Edit/Edit";
 import Seat from "../Seat/Seat";
 import Search from "../Search/Search";
+import { useLocation } from "react-router-dom";
 
 /**
  * Defines all the routes for the application.
@@ -19,6 +20,8 @@ import Search from "../Search/Search";
  * @returns {JSX.Element}
  */
 function Routes() {
+  const query = new URLSearchParams(useLocation().search);
+  const date = query.get('date')
   return (
     <Switch>
       <Route exact={true} path="/">
@@ -43,7 +46,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={today()} />
+      <Dashboard exportDate={date ? date:today()} />
       </Route>
       <Route>
         <NotFound />

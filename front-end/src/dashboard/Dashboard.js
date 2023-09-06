@@ -13,7 +13,7 @@ import makeDate from "./makeDate";
  * @returns {JSX.Element}
  */
 
-export default function Dashboard() {
+export default function Dashboard({ exportDate }) {
   const [dateAugment , setDateAugment] = useState(0);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
@@ -22,7 +22,9 @@ export default function Dashboard() {
 
   const loadReservations = () => {
     const abortController = new AbortController();
-    const date = makeDate(dateAugment);
+    const date = exportDate ? exportDate : makeDate(dateAugment);
+    setDateAugment(date)
+    console.log("DATEDASHLOG", date)
     setReservationsError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
