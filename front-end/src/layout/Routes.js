@@ -43,7 +43,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={today()} />
+        <Dashboard date={date ? date:today()} />
       </Route>
       <Route>
         <NotFound />
