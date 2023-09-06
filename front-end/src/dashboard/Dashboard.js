@@ -5,6 +5,8 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationDetails from "./ReservationDetails";
 import Table from "./TableDetails";
 import makeDate from "./makeDate";
+import useQuery from "../utils/useQuery";
+import { next, previous } from "../utils/date-time"
 
 /**
  * Defines the dashboard page.
@@ -14,15 +16,16 @@ import makeDate from "./makeDate";
  */
 
 export default function Dashboard({ exportDate }) {
-  const [dateAugment , setDateAugment] = useState(0);
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
+  const query = useQuery()
+  const [date, setDate] = useState(query.get("date") || exportDate);
 
   const loadReservations = () => {
     const abortController = new AbortController();
-    const date = exportDate ? exportDate : makeDate(dateAugment);
+    const date = exportDate ? exportDate : makeDate(date);
     //setDateAugment(date)
     console.log("DATEDASHLOG", date)
     setReservationsError(null);
@@ -30,7 +33,7 @@ export default function Dashboard({ exportDate }) {
       .then(setReservations)
       .catch(setReservationsError);
       console.log("RESERV IN DASH:", reservations)
-      console.log("date = ", makeDate(dateAugment))
+      console.log("date = ", makeDate(date))
     return () => abortController.abort();
   };
 
@@ -44,7 +47,7 @@ export default function Dashboard({ exportDate }) {
   };
 
   const loadBoth = () => {
-    console.log("Inside loadboth for -", dateAugment)
+    console.log("Inside loadboth for -", date)
     const controller = new AbortController();
     loadReservations();
     loadTables();
@@ -52,7 +55,7 @@ export default function Dashboard({ exportDate }) {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(loadBoth, [dateAugment])
+  useEffect(loadBoth, [date])
 
   //previous/today/next buttons
   const buttonSetDate = (event) => {
@@ -60,13 +63,13 @@ export default function Dashboard({ exportDate }) {
     const buttonText = event.target.innerHTML;
     switch (buttonText) {
       case "Previous":
-        setDateAugment(state => state - 1)
+        setDate(state => state - 1)
         break;
       case "Today":
-        setDateAugment(0)
+        setDate(0)
         break;
       case "Next":
-        setDateAugment(state => state + 1)
+        setDate(state => state + 1)
         break;
       default:
         break;
@@ -77,7 +80,7 @@ export default function Dashboard({ exportDate }) {
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {makeDate(dateAugment)}</h4>
+        <h4 className="mb-0">Reservations for {makeDate(date)}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
       <div className="reservations">
