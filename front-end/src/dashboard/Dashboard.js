@@ -6,7 +6,7 @@ import ReservationDetails from "./ReservationDetails";
 import Table from "./TableDetails";
 import makeDate from "./makeDate";
 import useQuery from "../utils/useQuery";
-import { next, previous } from "../utils/date-time"
+import { next, previous, today } from "../utils/date-time"
 
 /**
  * Defines the dashboard page.
@@ -66,7 +66,7 @@ export default function Dashboard({ exportDate }) {
         setDate(previous(date))
         break;
       case "Today":
-        setDate(0)
+        setDate(today())
         break;
       case "Next":
         setDate(next(date))
