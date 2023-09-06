@@ -28,24 +28,27 @@ export default function NewReservation({ reservation }) {
     });
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
     const controller = new AbortController();
-    if (reservation) {
-      updateReservation(reservationData, controller.signal) 
-      .then(() => {
-        history.push(`/dashboard?date=${reservationData.date}`);
-      })
-        .catch(setResError);
-    } else {
-      createReservation(reservationData, controller.signal) 
-      .then((createdReservation) => {
-        history.push(`/dashboard?date=${createdReservation.date}`);
-      })
-        .catch(setResError);
+    try {
+      if (reservation) {
+        const response = await updateReservation(reservationData, controller.signal);
+        console.log("Response:", response);
+        console.log("Date:", reservationData.reservation_date);
+        history.push(`/dashboard?date=${reservationData.reservation_date}`);
+      } else {
+        const result = await createReservation(reservationData, controller.signal);
+        console.log("Result:", result);
+        console.log("Date:", reservationData.reservation_date);
+        history.push(`/dashboard?date=${reservationData.reservation_date}`);
+      }
+    } catch (err) {
+      setResError(err);
     }
-    return () => controller.abort();
+    controller.abort();
   };
+  
 
   const cancelHandler = (event) => {
     event.preventDefault();
