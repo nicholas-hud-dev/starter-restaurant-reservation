@@ -25,7 +25,6 @@ export default function Dashboard({ exportDate }) {
 
   const loadReservations = () => {
     const abortController = new AbortController();
-    const date = exportDate ? exportDate : makeDate(date);
     //setDateAugment(date)
     console.log("DATEDASHLOG", date)
     setReservationsError(null);
