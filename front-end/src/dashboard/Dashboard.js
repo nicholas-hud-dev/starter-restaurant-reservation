@@ -1,10 +1,8 @@
-
 import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationDetails from "./ReservationDetails";
 import Table from "./TableDetails";
-import makeDate from "./makeDate";
 import useQuery from "../utils/useQuery";
 import { next, previous, today } from "../utils/date-time"
 
@@ -32,7 +30,7 @@ export default function Dashboard({ exportDate }) {
       .then(setReservations)
       .catch(setReservationsError);
       console.log("RESERV IN DASH:", reservations)
-      console.log("date = ", makeDate(date))
+      console.log("date = ", date)
     return () => abortController.abort();
   };
 
@@ -78,12 +76,11 @@ export default function Dashboard({ exportDate }) {
   return (
     <main>
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
+      <div class="dashboard" className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for { date }</h4>
       </div>
       <ErrorAlert error={reservationsError} />
       <div className="reservations">
-      <ReservationDetails reservations={reservations} />
       <div className="btn-group" role="group" aria-label="Basic example">
         <button type="button" className="btn btn-primary" onClick={buttonSetDate}>
           Previous
@@ -95,6 +92,7 @@ export default function Dashboard({ exportDate }) {
           Next
         </button>
       </div>
+      <ReservationDetails reservations={reservations} />
       <ErrorAlert error={tablesError} />
       <div className="tables">
       {tables.length < 1 ? <p>Loading...</p> :

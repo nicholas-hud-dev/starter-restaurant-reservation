@@ -18,7 +18,7 @@ export default function ReservationDetails({ reservations }) {
   
 
   return (
-    <table className="table">
+    <table id="resDeets" className="table">
       <thead>
         <tr>
           <th scope="col">First Name</th>

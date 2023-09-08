@@ -24,7 +24,7 @@ export default function Table({ tables }) {
     return(
         <div>
         <ErrorAlert error={tablesError} /> 
-        <table className='table'>
+        <table id="tableDeets" className='table'>
             <thead>
             <tr>
                 <th scope='col'>Table Name</th>

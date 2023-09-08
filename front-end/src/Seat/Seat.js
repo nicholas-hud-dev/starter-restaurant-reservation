@@ -26,7 +26,7 @@ export default function Seat() {
     event.preventDefault();
     const controller = new AbortController();
     updateTable(tableId, reservation_id, controller.signal)
-    .then(()=> history.push("/"))
+    .then(()=> history.push('/'))
     .catch(setTablesError)
     return () => controller.abort()
   };

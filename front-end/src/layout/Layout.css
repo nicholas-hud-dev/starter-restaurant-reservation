@@ -1,4 +1,107 @@
 .side-bar {
-  background-color: #393a44;
-  min-width: 200px;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch
+  
 }
+
+h1 {
+  color: beige;
+  font-family: cursive;
+  font-size: 55px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; 
+  display: flex;
+  justify-content: center;
+  
+  
+}
+
+.navbar {
+  background-color: rgb(107, 68, 0);
+}
+
+.reservations {
+  color: brown;
+}
+
+h4 {
+  color: rgb(115, 20, 20);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  background-color: wheat;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color:rgb(160, 119, 66)
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  margin: 0 auto;
+}
+
+#resDeets {
+  background-color: rgb(105, 43, 2);
+  color: rgb(219, 252, 255);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 15px;
+}
+
+#tableDeets {
+  background-color: rgb(105, 43, 2);
+  color: rgb(219, 252, 255);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 15px;
+}
+
+span {
+  color: beige;
+  font-family: cursive;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; 
+  display: flex;
+  justify-content: center;
+  
+}
+
+.navbar-brand {
+  font-size: 30px;
+  text-decoration: underline;
+  background-color: rgb(75, 30, 0);
+  border-radius: 100%;
+  width: 25%
+}
+
+.formy {
+  background-color: rgb(105, 43, 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+}
+
+.form-group, .d-flex {
+  display: flex;
+  font-size: 20px;
+  -webkit-text-stroke: 1px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.newTableButtons {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+}
+

@@ -73,9 +73,9 @@ const handleSubmit = event => {
                 />
                 </div>
                 
-                <div>
-                    <button type="reset" disabled={buttonDisable}>Cancel</button>
-                    <button type="submit" disabled={buttonDisable}>Submit</button>
+                <div className="newTableButtons">
+                    <button type="reset" className="btn btn-danger m-1" disabled={buttonDisable}>Cancel</button>
+                    <button type="submit" className="btn btn-primary m-1" disabled={buttonDisable}>Submit</button>
                 </div>
             </form>
         </div>

@@ -61,7 +61,7 @@ export default function NewReservation({ reservation }) {
     <div>
       {reservation ? <h1>Edit Reservation</h1> : <h1>New Reservation</h1>}
       <ErrorAlert error={createResError} />
-      <form onSubmit={submitHandler} onReset={cancelHandler}>
+      <form class="formy" onSubmit={submitHandler} onReset={cancelHandler}>
         <div className="form-group">
           <label htmlFor="first_name">First Name</label>
           <input
