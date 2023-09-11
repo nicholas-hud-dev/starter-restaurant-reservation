@@ -25,7 +25,7 @@ function Routes() {
   return (
     <Switch>
       <Route exact={true} path="/">
-        <Redirect to={"/"} />
+        <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/reservations/new">
         <NewReservation />
