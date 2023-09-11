@@ -1,10 +1,10 @@
 /* PC */
-body{ margin:10px; background-color: #4422cc;}
+body{ margin:10px; background-color: #ffffff;}
 @media only screen and (max-width: 800px) { /* TABLET */
-  body{ margin:8px; background-color: #04223c;}
+  body{ margin:8px; background-color: #000000;}
 }  
 @media only screen and (max-width: 500px) { /* PHONE */
-  body{ margin:4px;  background-color: #07589f;}
+  body{ margin:4px;  background-color: #808080;}
 }
 
 .side-bar {
