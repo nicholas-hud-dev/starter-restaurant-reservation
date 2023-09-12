@@ -68,7 +68,7 @@ main {
 #resDeets {
   background-color: rgb(105, 43, 2);
   color: rgb(219, 252, 255);
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Arial Narrow', Arial, sans-serif;
   font-size: 10px;
   min-width: 100%;
   max-width: 100%;
@@ -77,8 +77,8 @@ main {
 #tableDeets {
   background-color: rgb(105, 43, 2);
   color: rgb(219, 252, 255);
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 15px;
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 10px;
   min-width: 100%;
   max-width: 100%;
 }
