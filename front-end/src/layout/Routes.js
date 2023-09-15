@@ -10,6 +10,7 @@ import NewTable from "../newTable/NewTable";
 import Edit from "../Edit/Edit";
 import Seat from "../Seat/Seat";
 import Search from "../Search/Search";
+import useQuery from "../utils/useQuery";
 
 /**
  * Defines all the routes for the application.
@@ -19,7 +20,7 @@ import Search from "../Search/Search";
  * @returns {JSX.Element}
  */
 function Routes() {
-  const query = new URLSearchParams(useLocation().search);
+  const query = useQuery()
   const date = query.get('date')
   return (
     <Switch>
