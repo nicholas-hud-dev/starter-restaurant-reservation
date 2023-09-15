@@ -5,19 +5,20 @@ body{ margin:10px; background-color: #ffffff;}
     margin:8px; 
     background-color: #000000;
   }
+}  
 
+@media only screen and (max-width: 500px) { /* PHONE */
+  body{ 
+    margin:4px;  
+    background-color: #808080;
+  }
+  
   #tableDeets {
     font-size: 5px;
   }
 
   #resDeets {
     font-size: 5px;
-  }
-}  
-@media only screen and (max-width: 500px) { /* PHONE */
-  body{ 
-    margin:4px;  
-    background-color: #808080;
   }
 }
 
@@ -65,21 +66,18 @@ main {
   margin: 0 auto;
 }
 
-#resDeets {
+#resDeets, #tableDeets {
   background-color: rgb(105, 43, 2);
   color: rgb(219, 252, 255);
   font-family: 'Arial Narrow', Arial, sans-serif;
   font-size: 10px;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#tableDeets {
-  background-color: rgb(105, 43, 2);
-  color: rgb(219, 252, 255);
-  font-family: 'Arial Narrow', Arial, sans-serif;
-  font-size: 10px;
-  max-width: 100%;
-}
 
 span {
   color: beige;
