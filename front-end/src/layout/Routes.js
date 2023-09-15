@@ -24,7 +24,7 @@ function Routes() {
   return (
     <Switch>
       <Route exact={true} path="/">
-        <Redirect to={"/dashboard"} />
+        <Redirect to={"/"} />
       </Route>
       <Route path="/reservations/new">
         <NewReservation />
@@ -42,9 +42,9 @@ function Routes() {
         <Search />
       </Route>
       <Route exact={true} path="/reservations">
-        <Redirect to={"/dashboard"} />
+        <Redirect to={"/"} />
       </Route>
-      <Route path="/dashboard">
+      <Route path="/">
       <Dashboard exportDate={date ? date:today()} />
       </Route>
       <Route>
