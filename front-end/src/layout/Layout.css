@@ -66,7 +66,7 @@ main {
   margin: 0 auto;
 }
 
-#resDeets, #tableDeets {
+#tableDeets {
   background-color: rgb(105, 43, 2);
   color: rgb(219, 252, 255);
   font-family: 'Arial Narrow', Arial, sans-serif;
@@ -75,6 +75,17 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+}
+
+#resDeets {
+  background-color: rgb(105, 43, 2);
+  color: rgb(219, 252, 255);
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 6px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }
 
