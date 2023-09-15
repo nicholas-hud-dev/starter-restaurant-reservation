@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
@@ -10,7 +10,6 @@ import NewTable from "../newTable/NewTable";
 import Edit from "../Edit/Edit";
 import Seat from "../Seat/Seat";
 import Search from "../Search/Search";
-import { useLocation } from "react-router-dom";
 
 /**
  * Defines all the routes for the application.
