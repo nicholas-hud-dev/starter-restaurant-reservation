@@ -7,11 +7,11 @@ body{ margin:10px; background-color: #ffffff;}
   }
 
   #tableDeets {
-    font-size: 10px;
+    font-size: 5px;
   }
 
   #resDeets {
-    font-size: 10px;
+    font-size: 5px;
   }
 }  
 @media only screen and (max-width: 500px) { /* PHONE */
@@ -111,6 +111,7 @@ span {
 }
 
 .form-group, .d-flex {
+  background-color: rgb(105, 43, 2);
   display: flex;
   font-size: 20px;
   -webkit-text-stroke: 1px;
