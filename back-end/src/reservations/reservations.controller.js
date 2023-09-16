@@ -12,7 +12,7 @@ const reservationIdExists = async (req, res, next) => {
   } else {
     return next({
       message: `The reservation with reservation_id:${reservation_id} does not exist`,
-      status: 404,
+      status: 444,
     });
   }
 };
