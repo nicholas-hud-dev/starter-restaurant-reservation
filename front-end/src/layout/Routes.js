@@ -5,7 +5,7 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 
-import NewReservation from "../createReservation/NewReservation";
+import NewReservationForm from "../createReservation/NewReservationForm";
 import NewTable from "../newTable/NewTable";
 import Edit from "../Edit/Edit";
 import Seat from "../Seat/Seat";
@@ -28,7 +28,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/reservations/new">
-        <NewReservation />
+        <NewReservationForm />
       </Route>
       <Route path="/tables/new">
         <NewTable />

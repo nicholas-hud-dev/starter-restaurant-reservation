@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { createReservation, updateReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-export default function NewReservation({ reservation }) {
+export default function NewReservationForm({ reservation }) {
   let defaultReservationData = reservation ? reservation :
     {
         first_name: "",
