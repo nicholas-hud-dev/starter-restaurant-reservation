@@ -61,7 +61,7 @@ export default function NewReservation({ reservation }) {
     <div>
       {reservation ? <h1>Edit Reservation</h1> : <h1>New Reservation</h1>}
       <ErrorAlert error={createResError} />
-      <form class="formy" onSubmit={submitHandler} onReset={cancelHandler}>
+      <form onSubmit={submitHandler} onReset={cancelHandler}>
         <div className="form-group">
           <label htmlFor="first_name">First Name</label>
           <input
@@ -96,6 +96,9 @@ export default function NewReservation({ reservation }) {
             placeholder="Mobile Number"
             value={reservationData.mobile_number}
             onChange={changeHandler}
+            pattern="^\d{3}-\d{3}-\d{4}$"
+            title="Please enter a valid phone number in the format xxx-xxx-xxxx"
+            required
           />
         </div>
         <div className="form-group">

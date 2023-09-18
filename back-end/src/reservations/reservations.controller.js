@@ -12,7 +12,7 @@ const reservationIdExists = async (req, res, next) => {
   } else {
     return next({
       message: `The reservation with reservation_id:${reservation_id} does not exist`,
-      status: 444,
+      status: 404,
     });
   }
 };
@@ -66,6 +66,7 @@ const mobileNumberExists = async (req, res, next) => {
     });
   }
 };
+
 
 const reservationDateExists = async (req, res, next) => {
   if(req.params.reservation_option === "status") return next();

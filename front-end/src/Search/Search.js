@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import Form from "../createReservation/Form";
-
 const formatNumber = mobile_phone => {
   mobile_phone = mobile_phone.toString();
   const areaCode = mobile_phone.slice(0,3);

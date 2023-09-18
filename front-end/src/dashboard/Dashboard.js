@@ -76,7 +76,7 @@ export default function Dashboard({ exportDate }) {
   return (
     <main>
       <h1>Dashboard</h1>
-      <div class="dashboard" className="d-md-flex mb-3">
+      <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for { date }</h4>
       </div>
       <ErrorAlert error={reservationsError} />
