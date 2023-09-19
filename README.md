@@ -6,23 +6,41 @@ https://resrevfrontend.onrender.com/
 ____________________________________________________________________________________
 
 Table of Contents:
+
 TABLES API Documentation
-	Resource: Tables
-		List Tables
-		Create a New Table
-	Resource: Single Table
-		Read Table Details
-		Update Table Details
-		Delete a Table
+	
+ Resource: Tables
+		
+  List Tables
+		
+  Create a New Table
+	
+ Resource: Single Table
+		
+  Read Table Details
+		
+  Update Table Details
+		
+  Delete a Table
+
 RESERVATIONS API Documentation
-	Resource: Reservations
-		Create a New Reservation
-		List Reservations
-	Resource: Single Reservation
-		Read Reservation Details
-		Update Reservation Details
+	
+ Resource: Reservations
+		
+  Create a New Reservation
+		
+  List Reservations
+	
+ Resource: Single Reservation
+		
+  Read Reservation Details
+		
+  Update Reservation Details
+
 SUMMARY SECTION
+
 TECHNOLOGY USED
+
 INSTALLATION INSTRUCTIONS
 ____________________________________________________________________________________
 
