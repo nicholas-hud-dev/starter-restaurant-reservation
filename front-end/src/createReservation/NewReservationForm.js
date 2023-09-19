@@ -93,7 +93,7 @@ export default function NewReservationForm({ reservation }) {
             className="form-control"
             name="mobile_number"
             id="mobile_number"
-            placeholder="Mobile Number"
+            placeholder="xxx-xxx-xxxx"
             value={reservationData.mobile_number}
             onChange={changeHandler}
             pattern="^\d{3}-\d{3}-\d{4}$"
@@ -117,8 +117,8 @@ export default function NewReservationForm({ reservation }) {
           <label htmlFor="reservation_time">Reservation Time</label>
           <input
             type="time"
-            // min="10:30"
-            // max="21:30"
+             min="10:30"
+             max="21:30"
             className="form-control"
             name="reservation_time"
             id="reservation_time"
